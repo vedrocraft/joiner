@@ -74,30 +74,18 @@ public class JoinerUserServiceImpl implements JoinerUserService {
     }
 
     @Override
-    public void sendFakeJoinMessage(@NonNull JoinerUser user) {
-        Player sender = Bukkit.getPlayer(user.getUsername());
-
-        if(sender == null || !sender.isOnline()) {
-            return;
-        }
-
-        Bukkit.getOnlinePlayers().forEach(player ->
-                player.sendMessage(miniMessage.deserialize(
-                        PlaceholderAPI.setPlaceholders(sender, messageService.getJoinMessage(user))
+    public void sendFakeJoinMessage(@NonNull Player player) {
+        Bukkit.getOnlinePlayers().forEach(onlinePlayer ->
+                onlinePlayer.sendMessage(miniMessage.deserialize(
+                        PlaceholderAPI.setPlaceholders(player, messageService.getJoinMessage(getUser(player.getName())))
                 )));
     }
 
     @Override
-    public void sendFakeQuitMessage(@NonNull JoinerUser user) {
-        Player sender = Bukkit.getPlayer(user.getUsername());
-
-        if(sender == null || !sender.isOnline()) {
-            return;
-        }
-
-        Bukkit.getOnlinePlayers().forEach(player ->
-                player.sendMessage(miniMessage.deserialize(
-                        PlaceholderAPI.setPlaceholders(sender, messageService.getQuitMessage(user))
+    public void sendFakeQuitMessage(@NonNull Player player) {
+        Bukkit.getOnlinePlayers().forEach(onlinePlayer ->
+                onlinePlayer.sendMessage(miniMessage.deserialize(
+                        PlaceholderAPI.setPlaceholders(player, messageService.getQuitMessage(getUser(player.getName())))
                 )));
     }
 }

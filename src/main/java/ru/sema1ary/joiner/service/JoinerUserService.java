@@ -1,6 +1,7 @@
 package ru.sema1ary.joiner.service;
 
 import lombok.NonNull;
+import org.bukkit.entity.Player;
 import ru.sema1ary.joiner.model.JoinerUser;
 import service.Service;
 
@@ -21,7 +22,7 @@ public interface JoinerUserService extends Service {
 
     JoinerUser getUser(@NonNull String username);
 
-    void sendFakeJoinMessage(@NonNull JoinerUser user);
+    void sendFakeJoinMessage(@NonNull Player player);
 
-    void sendFakeQuitMessage(@NonNull JoinerUser user);
+    void sendFakeQuitMessage(@NonNull Player player);
 }

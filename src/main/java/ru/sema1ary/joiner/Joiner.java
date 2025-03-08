@@ -67,7 +67,7 @@ public final class Joiner extends JavaPlugin implements DaoFinder {
     @SneakyThrows
     private void initConnectionSource() {
         if(ServiceManager.getService(ConfigService.class).get("sql-use")) {
-            connectionSource = ConnectionSourceUtil.connectSQLDatabase(
+            connectionSource = ConnectionSourceUtil.connectSQLDatabaseWithoutSSL(
                     ServiceManager.getService(ConfigService.class).get("sql-driver"),
                     ServiceManager.getService(ConfigService.class).get("sql-host"),
                     ServiceManager.getService(ConfigService.class).get("sql-database"),
