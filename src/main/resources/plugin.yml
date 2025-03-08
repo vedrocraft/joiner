@@ -1,0 +1,7 @@
+name: joiner
+version: '1.0'
+main: ru.sema1ary.joiner.Joiner
+api-version: '1.20'
+authors: [sema1ary]
+depend:
+  - PlaceholderAPI

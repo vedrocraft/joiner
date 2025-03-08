@@ -1,0 +1,20 @@
+configuration:
+  sql-driver: 'mariadb' # MariaDB, MySQL, PostgreSQL
+  sql-use: false
+  sql-host: 'localhost:3306'
+  sql-database: 'database'
+  sql-user: 'user'
+  sql-password: 'password'
+
+  reload-message: '<green>Плагин перезапущен.'
+
+  enable-welcome-text: true
+  welcome-text: '<green>Добро пожаловать!'
+
+  default-join-message: '<green>✔ <dark_gray>| <gray>%player_name%'
+  default-quit-message: '<red>✘ <dark_gray>| <gray>%player_name%'
+
+  successful-message-creation-message: '<green>Вы успешно создали сообщение.'
+  successful-message-delete-message: '<green>Вы успешно удалили сообщение.'
+
+  error-message-already-exists-message: '<red>Данное сообщение уже существует.'
