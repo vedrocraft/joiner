@@ -77,7 +77,7 @@ public class JoinerUserServiceImpl implements JoinerUserService {
         JoinerUser user = getUser(target.getName());
 
         player.sendMessage(miniMessage.deserialize(
-                PlaceholderAPI.setPlaceholders(player, messageService.getJoinMessage(user)
+                PlaceholderAPI.setPlaceholders(target, messageService.getJoinMessage(user)
                 )));
     }
 
@@ -86,7 +86,7 @@ public class JoinerUserServiceImpl implements JoinerUserService {
         JoinerUser user = getUser(target.getName());
 
         player.sendMessage(miniMessage.deserialize(
-                PlaceholderAPI.setPlaceholders(player, messageService.getQuitMessage(user)
+                PlaceholderAPI.setPlaceholders(target, messageService.getQuitMessage(user)
         )));
     }
 }
