@@ -3,6 +3,7 @@ package ru.sema1ary.joiner.listener;
 import lombok.RequiredArgsConstructor;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,7 +23,9 @@ public class QuitListener implements Listener {
         Player player = event.getPlayer();
         JoinerUser user = userService.getUser(player.getName());
 
-        event.quitMessage(miniMessage.deserialize(
+        event.quitMessage(null);
+
+        Bukkit.getServer().sendMessage(miniMessage.deserialize(
                 PlaceholderAPI.setPlaceholders(player, messageService.getQuitMessage(user))
         ));
     }

@@ -3,6 +3,7 @@ package ru.sema1ary.joiner.listener;
 import lombok.RequiredArgsConstructor;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,7 +29,9 @@ public class JoinListener implements Listener {
         }
 
         JoinerUser user = userService.getUser(player.getName());
-        event.joinMessage(miniMessage.deserialize(
+        event.joinMessage(null);
+
+        Bukkit.getServer().sendMessage(miniMessage.deserialize(
                 PlaceholderAPI.setPlaceholders(player, messageService.getJoinMessage(user))
         ));
     }
