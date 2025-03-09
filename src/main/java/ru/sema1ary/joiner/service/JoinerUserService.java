@@ -22,7 +22,7 @@ public interface JoinerUserService extends Service {
 
     JoinerUser getUser(@NonNull String username);
 
-    void sendFakeJoinMessage(@NonNull Player player);
+    void sendFakeJoinMessage(@NonNull Player target, @NonNull Player player);
 
-    void sendFakeQuitMessage(@NonNull Player player);
+    void sendFakeQuitMessage(@NonNull Player target, @NonNull Player player);
 }

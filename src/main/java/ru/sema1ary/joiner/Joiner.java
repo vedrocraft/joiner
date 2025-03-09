@@ -19,13 +19,14 @@ import ru.sema1ary.joiner.service.impl.JoinerUserServiceImpl;
 import ru.sema1ary.joiner.util.LiteCommandUtil;
 import ru.vidoskim.bukkit.service.ConfigService;
 import ru.vidoskim.bukkit.service.impl.ConfigServiceImpl;
+import service.ServiceGetter;
 import service.ServiceManager;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public final class Joiner extends JavaPlugin implements DaoFinder {
+public final class Joiner extends JavaPlugin implements DaoFinder, ServiceGetter {
     private final MiniMessage miniMessage = MiniMessage.miniMessage();
     private JdbcPooledConnectionSource connectionSource;
 

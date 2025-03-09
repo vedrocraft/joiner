@@ -4,7 +4,6 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import ru.sema1ary.joiner.dao.JoinerUserDao;
 import ru.sema1ary.joiner.model.JoinerUser;
@@ -74,18 +73,20 @@ public class JoinerUserServiceImpl implements JoinerUserService {
     }
 
     @Override
-    public void sendFakeJoinMessage(@NonNull Player player) {
-        Bukkit.getOnlinePlayers().forEach(onlinePlayer ->
-                onlinePlayer.sendMessage(miniMessage.deserialize(
-                        PlaceholderAPI.setPlaceholders(player, messageService.getJoinMessage(getUser(player.getName())))
+    public void sendFakeJoinMessage(@NonNull Player target, @NonNull Player player) {
+        JoinerUser user = getUser(target.getName());
+
+        player.sendMessage(miniMessage.deserialize(
+                PlaceholderAPI.setPlaceholders(player, messageService.getJoinMessage(user)
                 )));
     }
 
     @Override
-    public void sendFakeQuitMessage(@NonNull Player player) {
-        Bukkit.getOnlinePlayers().forEach(onlinePlayer ->
-                onlinePlayer.sendMessage(miniMessage.deserialize(
-                        PlaceholderAPI.setPlaceholders(player, messageService.getQuitMessage(getUser(player.getName())))
-                )));
+    public void sendFakeQuitMessage(@NonNull Player target, @NonNull Player player) {
+        JoinerUser user = getUser(target.getName());
+
+        player.sendMessage(miniMessage.deserialize(
+                PlaceholderAPI.setPlaceholders(player, messageService.getQuitMessage(user)
+        )));
     }
 }
