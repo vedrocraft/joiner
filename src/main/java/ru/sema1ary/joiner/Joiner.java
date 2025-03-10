@@ -4,9 +4,8 @@ import com.j256.ormlite.jdbc.JdbcPooledConnectionSource;
 import lombok.SneakyThrows;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.plugin.java.JavaPlugin;
-import ormlite.ConnectionSourceUtil;
-import ormlite.DaoFinder;
 import ru.sema1ary.joiner.command.JoinerCommand;
+import ru.sema1ary.joiner.command.argument.JoinerMessageArgument;
 import ru.sema1ary.joiner.listener.JoinListener;
 import ru.sema1ary.joiner.listener.PreJoinListener;
 import ru.sema1ary.joiner.listener.QuitListener;
@@ -16,11 +15,13 @@ import ru.sema1ary.joiner.service.JoinerMessageService;
 import ru.sema1ary.joiner.service.JoinerUserService;
 import ru.sema1ary.joiner.service.impl.JoinerMessageServiceImpl;
 import ru.sema1ary.joiner.service.impl.JoinerUserServiceImpl;
-import ru.sema1ary.joiner.util.LiteCommandUtil;
-import ru.vidoskim.bukkit.service.ConfigService;
-import ru.vidoskim.bukkit.service.impl.ConfigServiceImpl;
-import service.ServiceGetter;
-import service.ServiceManager;
+import ru.sema1ary.vedrocraftapi.ormlite.ConnectionSourceUtil;
+import ru.sema1ary.vedrocraftapi.ormlite.DaoFinder;
+import ru.sema1ary.vedrocraftapi.service.ServiceGetter;
+import ru.sema1ary.vedrocraftapi.service.ServiceManager;
+import ru.sema1ary.vedrocraftapi.service.service.ConfigService;
+import ru.sema1ary.vedrocraftapi.service.service.impl.ConfigServiceImpl;
+import ru.sema1ary.vedrocraftapi.service.util.command.LiteCommandBuilder;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -54,10 +55,13 @@ public final class Joiner extends JavaPlugin implements DaoFinder, ServiceGetter
                 ServiceManager.getService(JoinerUserService.class),
                 ServiceManager.getService(JoinerMessageService.class)), this);
 
-        new LiteCommandUtil(ServiceManager.getService(JoinerMessageService.class))
-                .create(new JoinerCommand(miniMessage, ServiceManager.getService(ConfigService.class),
-                ServiceManager.getService(JoinerUserService.class),
-                ServiceManager.getService(JoinerMessageService.class)));
+        LiteCommandBuilder.builder(ServiceManager.getService(ConfigService.class))
+                .argument(JoinerMessage.class, new JoinerMessageArgument(ServiceManager.getService(
+                        JoinerMessageService.class)))
+                .commands(new JoinerCommand(miniMessage, ServiceManager.getService(ConfigService.class),
+                        ServiceManager.getService(JoinerUserService.class),
+                        ServiceManager.getService(JoinerMessageService.class)))
+                .build();
     }
 
     @Override
@@ -68,7 +72,7 @@ public final class Joiner extends JavaPlugin implements DaoFinder, ServiceGetter
     @SneakyThrows
     private void initConnectionSource() {
         if(ServiceManager.getService(ConfigService.class).get("sql-use")) {
-            connectionSource = ConnectionSourceUtil.connectSQLDatabaseWithoutSSL(
+            connectionSource = ConnectionSourceUtil.connectSQL(
                     ServiceManager.getService(ConfigService.class).get("sql-driver"),
                     ServiceManager.getService(ConfigService.class).get("sql-host"),
                     ServiceManager.getService(ConfigService.class).get("sql-database"),
@@ -83,8 +87,8 @@ public final class Joiner extends JavaPlugin implements DaoFinder, ServiceGetter
             return;
         }
 
-        connectionSource = ConnectionSourceUtil.connectNoSQLDatabase("sqlite",
-                databaseFilePath.toString(), JoinerUser.class, JoinerMessage.class);
+        connectionSource = ConnectionSourceUtil.connectNoSQLDatabase(databaseFilePath.toString(),
+                JoinerUser.class, JoinerMessage.class);
     }
 
 }

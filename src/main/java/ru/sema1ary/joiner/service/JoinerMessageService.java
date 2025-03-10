@@ -3,7 +3,7 @@ package ru.sema1ary.joiner.service;
 import lombok.NonNull;
 import ru.sema1ary.joiner.model.JoinerUser;
 import ru.sema1ary.joiner.model.message.JoinerMessage;
-import service.Service;
+import ru.sema1ary.vedrocraftapi.service.Service;
 
 import java.util.List;
 import java.util.Optional;

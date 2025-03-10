@@ -14,7 +14,7 @@ import ru.sema1ary.joiner.model.message.JoinerMessage;
 import ru.sema1ary.joiner.model.message.MessageType;
 import ru.sema1ary.joiner.service.JoinerMessageService;
 import ru.sema1ary.joiner.service.JoinerUserService;
-import ru.vidoskim.bukkit.service.ConfigService;
+import ru.sema1ary.vedrocraftapi.service.service.ConfigService;
 
 @RequiredArgsConstructor
 @Command(name = "joiner")
