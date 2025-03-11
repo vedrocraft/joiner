@@ -7,7 +7,7 @@ import ru.sema1ary.joiner.model.JoinerUser;
 import ru.sema1ary.joiner.model.message.JoinerMessage;
 import ru.sema1ary.joiner.model.message.MessageType;
 import ru.sema1ary.joiner.service.JoinerMessageService;
-import ru.sema1ary.vedrocraftapi.service.service.ConfigService;
+import ru.sema1ary.vedrocraftapi.service.ConfigService;
 
 import java.sql.SQLException;
 import java.util.List;

@@ -15,13 +15,13 @@ import ru.sema1ary.joiner.service.JoinerMessageService;
 import ru.sema1ary.joiner.service.JoinerUserService;
 import ru.sema1ary.joiner.service.impl.JoinerMessageServiceImpl;
 import ru.sema1ary.joiner.service.impl.JoinerUserServiceImpl;
+import ru.sema1ary.vedrocraftapi.command.LiteCommandBuilder;
 import ru.sema1ary.vedrocraftapi.ormlite.ConnectionSourceUtil;
 import ru.sema1ary.vedrocraftapi.ormlite.DaoFinder;
+import ru.sema1ary.vedrocraftapi.service.ConfigService;
 import ru.sema1ary.vedrocraftapi.service.ServiceGetter;
 import ru.sema1ary.vedrocraftapi.service.ServiceManager;
-import ru.sema1ary.vedrocraftapi.service.service.ConfigService;
-import ru.sema1ary.vedrocraftapi.service.service.impl.ConfigServiceImpl;
-import ru.sema1ary.vedrocraftapi.service.util.command.LiteCommandBuilder;
+import ru.sema1ary.vedrocraftapi.service.impl.ConfigServiceImpl;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -55,7 +55,7 @@ public final class Joiner extends JavaPlugin implements DaoFinder, ServiceGetter
                 ServiceManager.getService(JoinerUserService.class),
                 ServiceManager.getService(JoinerMessageService.class)), this);
 
-        LiteCommandBuilder.builder(ServiceManager.getService(ConfigService.class))
+        LiteCommandBuilder.builder()
                 .argument(JoinerMessage.class, new JoinerMessageArgument(ServiceManager.getService(
                         JoinerMessageService.class)))
                 .commands(new JoinerCommand(miniMessage, ServiceManager.getService(ConfigService.class),

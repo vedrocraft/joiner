@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import ru.sema1ary.joiner.model.JoinerUser;
 import ru.sema1ary.joiner.service.JoinerMessageService;
 import ru.sema1ary.joiner.service.JoinerUserService;
-import ru.sema1ary.vedrocraftapi.service.service.ConfigService;
+import ru.sema1ary.vedrocraftapi.service.ConfigService;
 
 @RequiredArgsConstructor
 public class JoinListener implements Listener {
