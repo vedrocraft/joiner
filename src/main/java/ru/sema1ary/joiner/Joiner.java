@@ -15,11 +15,10 @@ import ru.sema1ary.joiner.service.JoinerMessageService;
 import ru.sema1ary.joiner.service.JoinerUserService;
 import ru.sema1ary.joiner.service.impl.JoinerMessageServiceImpl;
 import ru.sema1ary.joiner.service.impl.JoinerUserServiceImpl;
+import ru.sema1ary.vedrocraftapi.BaseCommons;
 import ru.sema1ary.vedrocraftapi.command.LiteCommandBuilder;
 import ru.sema1ary.vedrocraftapi.ormlite.ConnectionSourceUtil;
-import ru.sema1ary.vedrocraftapi.ormlite.DaoFinder;
 import ru.sema1ary.vedrocraftapi.service.ConfigService;
-import ru.sema1ary.vedrocraftapi.service.ServiceGetter;
 import ru.sema1ary.vedrocraftapi.service.ServiceManager;
 import ru.sema1ary.vedrocraftapi.service.impl.ConfigServiceImpl;
 
@@ -27,9 +26,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public final class Joiner extends JavaPlugin implements DaoFinder, ServiceGetter {
+public final class Joiner extends JavaPlugin implements BaseCommons {
     private final MiniMessage miniMessage = MiniMessage.miniMessage();
-    private JdbcPooledConnectionSource connectionSource;
 
     @Override
     public void onEnable() {
@@ -40,10 +38,10 @@ public final class Joiner extends JavaPlugin implements DaoFinder, ServiceGetter
         initConnectionSource();
 
         ServiceManager.registerService(JoinerMessageService.class, new JoinerMessageServiceImpl(
-                getDao(connectionSource, JoinerMessage.class),
+                getDao(JoinerMessage.class),
                 ServiceManager.getService(ConfigService.class)));
         ServiceManager.registerService(JoinerUserService.class, new JoinerUserServiceImpl(miniMessage,
-                getDao(connectionSource, JoinerUser.class), ServiceManager.getService(JoinerMessageService.class)));
+                getDao(JoinerUser.class), ServiceManager.getService(JoinerMessageService.class)));
 
         getServer().getPluginManager().registerEvents(new PreJoinListener(
                 ServiceManager.getService(JoinerUserService.class)), this);
@@ -66,13 +64,13 @@ public final class Joiner extends JavaPlugin implements DaoFinder, ServiceGetter
 
     @Override
     public void onDisable() {
-        ConnectionSourceUtil.closeConnection(true, connectionSource);
+        ConnectionSourceUtil.closeConnection(true);
     }
 
     @SneakyThrows
     private void initConnectionSource() {
         if(ServiceManager.getService(ConfigService.class).get("sql-use")) {
-            connectionSource = ConnectionSourceUtil.connectSQL(
+            ConnectionSourceUtil.connectSQL(
                     ServiceManager.getService(ConfigService.class).get("sql-host"),
                     ServiceManager.getService(ConfigService.class).get("sql-database"),
                     ServiceManager.getService(ConfigService.class).get("sql-user"),
@@ -86,7 +84,7 @@ public final class Joiner extends JavaPlugin implements DaoFinder, ServiceGetter
             return;
         }
 
-        connectionSource = ConnectionSourceUtil.connectNoSQLDatabase(databaseFilePath.toString(),
+        ConnectionSourceUtil.connectNoSQLDatabase(databaseFilePath.toString(),
                 JoinerUser.class, JoinerMessage.class);
     }
 
