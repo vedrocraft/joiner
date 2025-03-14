@@ -39,15 +39,17 @@ public final class Joiner extends JavaPlugin implements BaseCommons {
         ServiceManager.registerService(JoinerMessageService.class, new JoinerMessageServiceImpl(
                 getDao(JoinerMessage.class),
                 ServiceManager.getService(ConfigService.class)));
-        ServiceManager.registerService(JoinerUserService.class, new JoinerUserServiceImpl(miniMessage,
-                getDao(JoinerUser.class), ServiceManager.getService(JoinerMessageService.class)));
+        ServiceManager.registerService(JoinerUserService.class, new JoinerUserServiceImpl(getDao(JoinerUser.class),
+                ServiceManager.getService(JoinerMessageService.class)));
 
         getServer().getPluginManager().registerEvents(new PreJoinListener(
                 ServiceManager.getService(JoinerUserService.class)), this);
+
         getServer().getPluginManager().registerEvents(new JoinListener(miniMessage,
                 ServiceManager.getService(ConfigService.class),
                 ServiceManager.getService(JoinerUserService.class),
                 ServiceManager.getService(JoinerMessageService.class)), this);
+
         getServer().getPluginManager().registerEvents(new QuitListener(miniMessage,
                 ServiceManager.getService(JoinerUserService.class),
                 ServiceManager.getService(JoinerMessageService.class)), this);
@@ -55,7 +57,7 @@ public final class Joiner extends JavaPlugin implements BaseCommons {
         LiteCommandBuilder.builder()
                 .argument(JoinerMessage.class, new JoinerMessageArgument(ServiceManager.getService(
                         JoinerMessageService.class)))
-                .commands(new JoinerCommand(miniMessage, ServiceManager.getService(ConfigService.class),
+                .commands(new JoinerCommand(ServiceManager.getService(ConfigService.class),
                         ServiceManager.getService(JoinerUserService.class),
                         ServiceManager.getService(JoinerMessageService.class)))
                 .build();
