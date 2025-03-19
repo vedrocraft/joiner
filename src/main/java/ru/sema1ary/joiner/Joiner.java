@@ -46,16 +46,19 @@ public final class Joiner extends JavaPlugin implements BaseCommons {
                 getService(JoinerMessageService.class)));
 
         getServer().getPluginManager().registerEvents(new PreJoinListener(
-                getService(JoinerUserService.class)), this);
+                getService(JoinerUserService.class)
+        ), this);
 
         getServer().getPluginManager().registerEvents(new JoinListener(miniMessage,
                 getService(ConfigService.class),
                 getService(JoinerUserService.class),
-                getService(JoinerMessageService.class)), this);
+                getService(JoinerMessageService.class)
+        ), this);
 
         getServer().getPluginManager().registerEvents(new QuitListener(miniMessage,
                 getService(JoinerUserService.class),
-                getService(JoinerMessageService.class)), this);
+                getService(JoinerMessageService.class)
+        ), this);
 
         LiteCommandBuilder.builder()
                 .argument(JoinerMessage.class, new JoinerMessageArgument(
