@@ -17,6 +17,7 @@ import ru.sema1ary.joiner.service.impl.JoinerUserServiceImpl;
 import ru.sema1ary.vedrocraftapi.BaseCommons;
 import ru.sema1ary.vedrocraftapi.command.LiteCommandBuilder;
 import ru.sema1ary.vedrocraftapi.ormlite.ConnectionSourceUtil;
+import ru.sema1ary.vedrocraftapi.ormlite.DatabaseUtil;
 import ru.sema1ary.vedrocraftapi.service.ConfigService;
 import ru.sema1ary.vedrocraftapi.service.ServiceManager;
 import ru.sema1ary.vedrocraftapi.service.impl.ConfigServiceImpl;
@@ -30,29 +31,30 @@ public final class Joiner extends JavaPlugin implements BaseCommons {
 
     @Override
     public void onEnable() {
-        saveDefaultConfig();
-
         ServiceManager.registerService(ConfigService.class, new ConfigServiceImpl(this));
 
-        initConnectionSource();
+        DatabaseUtil.initConnectionSource(
+                this,
+                getService(ConfigService.class),
+                JoinerUser.class, JoinerMessage.class);
 
         ServiceManager.registerService(JoinerMessageService.class, new JoinerMessageServiceImpl(
                 getDao(JoinerMessage.class),
-                ServiceManager.getService(ConfigService.class)));
+                getService(ConfigService.class)));
         ServiceManager.registerService(JoinerUserService.class, new JoinerUserServiceImpl(getDao(JoinerUser.class),
-                ServiceManager.getService(JoinerMessageService.class)));
+                getService(JoinerMessageService.class)));
 
         getServer().getPluginManager().registerEvents(new PreJoinListener(
-                ServiceManager.getService(JoinerUserService.class)), this);
+                getService(JoinerUserService.class)), this);
 
         getServer().getPluginManager().registerEvents(new JoinListener(miniMessage,
-                ServiceManager.getService(ConfigService.class),
-                ServiceManager.getService(JoinerUserService.class),
-                ServiceManager.getService(JoinerMessageService.class)), this);
+                getService(ConfigService.class),
+                getService(JoinerUserService.class),
+                getService(JoinerMessageService.class)), this);
 
         getServer().getPluginManager().registerEvents(new QuitListener(miniMessage,
-                ServiceManager.getService(JoinerUserService.class),
-                ServiceManager.getService(JoinerMessageService.class)), this);
+                getService(JoinerUserService.class),
+                getService(JoinerMessageService.class)), this);
 
         LiteCommandBuilder.builder()
                 .argument(JoinerMessage.class, new JoinerMessageArgument(ServiceManager.getService(
@@ -67,26 +69,4 @@ public final class Joiner extends JavaPlugin implements BaseCommons {
     public void onDisable() {
         ConnectionSourceUtil.closeConnection(true);
     }
-
-    @SneakyThrows
-    private void initConnectionSource() {
-        if(ServiceManager.getService(ConfigService.class).get("sql-use")) {
-            ConnectionSourceUtil.connectSQL(
-                    ServiceManager.getService(ConfigService.class).get("sql-host"),
-                    ServiceManager.getService(ConfigService.class).get("sql-database"),
-                    ServiceManager.getService(ConfigService.class).get("sql-user"),
-                    ServiceManager.getService(ConfigService.class).get("sql-password"),
-                    JoinerUser.class, JoinerMessage.class);
-            return;
-        }
-
-        Path databaseFilePath = Paths.get("plugins/joiner/database.sqlite");
-        if(!Files.exists(databaseFilePath) && !databaseFilePath.toFile().createNewFile()) {
-            return;
-        }
-
-        ConnectionSourceUtil.connectNoSQLDatabase(databaseFilePath.toString(),
-                JoinerUser.class, JoinerMessage.class);
-    }
-
 }

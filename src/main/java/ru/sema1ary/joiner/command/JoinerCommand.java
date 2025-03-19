@@ -28,7 +28,7 @@ public class JoinerCommand {
     @Permission("joiner.reload")
     void reload(@Context CommandSender sender) {
         configService.reload();
-        PlayerUtil.sendMessage(sender, configService.get("reload-message"));
+        PlayerUtil.sendMessage(sender, (String) configService.get("reload-message"));
     }
 
     @Async
@@ -38,7 +38,7 @@ public class JoinerCommand {
         @Join("текст") String text) {
 
         if(messageService.findByName(name).isPresent()) {
-            PlayerUtil.sendMessage(sender, configService.get("error-message-already-exists-message"));
+            PlayerUtil.sendMessage(sender, (String) configService.get("error-message-already-exists-message"));
             return;
         }
 
@@ -48,7 +48,7 @@ public class JoinerCommand {
                 .text(text)
                 .build());
 
-        PlayerUtil.sendMessage(sender, configService.get("successful-message-creation-message"));
+        PlayerUtil.sendMessage(sender, (String) configService.get("successful-message-creation-message"));
     }
 
     @Async
@@ -56,6 +56,6 @@ public class JoinerCommand {
     @Permission("joiner.delete")
     void delete(@Context CommandSender sender, @Arg("сообщение") JoinerMessage message) {
         messageService.delete(message);
-        PlayerUtil.sendMessage(sender, configService.get("successful-message-delete-message"));
+        PlayerUtil.sendMessage(sender, (String) configService.get("successful-message-delete-message"));
     }
 }

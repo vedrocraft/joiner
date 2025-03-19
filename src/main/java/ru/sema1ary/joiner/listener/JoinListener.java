@@ -26,7 +26,7 @@ public class JoinListener implements Listener {
         Player player = event.getPlayer();
 
         if(configService.get("enable-welcome-text")) {
-            PlayerUtil.sendMessage(player, configService.get("welcome-text"));
+            PlayerUtil.sendMessage(player, (String) configService.get("welcome-text"));
         }
 
         JoinerUser user = userService.getUser(player.getName());
